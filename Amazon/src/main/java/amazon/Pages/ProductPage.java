@@ -29,13 +29,12 @@ public class ProductPage extends PageBase{
 	By products =By.xpath("//*[@class='a-section aok-relative s-image-fixed-height']");	
 	By price =By.xpath("(//span[@class='a-price-whole'])[1]");	
 	By addToCartBOX =By.xpath("(//div[@class='a-box-inner'])[1]");	
-	By addToCartBtn =By.xpath("//*[@id='add-to-cart-button']");	
+	By addToCartBtn =By.xpath("//input[@id='add-to-cart-button']");	
 	By addedToCartSuccessfully =By.xpath("//span[contains(text(),'Added to Cart')]");	
 	By results =By.xpath("//span[contains(text(),'Results')]");
 	By brand =By.xpath("//a[@class='a-link-normal'][@id='bylineInfo']");
 	By nextPage=By.xpath("//a[@href='/-/en/s?i=videogames&bbn=18022560031&rh=n%3A18022560031%2Cp_n_free_shipping_eligible%3A21909080031&s=price-desc-rank&dc&page=2&language=en&qid=1683822107&rnid=21909079031&ref=sr_pg_1']");
-	
-	
+	By noThanksBtn =By.xpath("//a[@class='a-link-normal'][@id='bylineInfo']");
 	
 	public ProductPage (WebDriver driver) {
 		super(driver);
@@ -85,50 +84,42 @@ public class ProductPage extends PageBase{
 	}	
 	//Add To Cart All Products Less Than 15K
 	
-	public Integer  AddToCartAllProductsLessThan15K ()
-	{
-			
+	public Integer  AddToCartWhenProductsLessThan (int lessThanvalue)
+	{		
 	    List<WebElement> productsList = drvier.findElements(products);
 		
 		int productSize= productsList.size();
-		System.out.println(productSize);
-	  //Make a for loop for all products in the page and add if the product is exist and less than 15k
+		//Make a for loop for all products in the page and add if the product is exist and less than 15k
 		int prductsCount=0;	
 		for (int i = 0; i < productSize; i++)
-		{	
-			
+		{				
 			 productsList = drvier.findElements(products);
 		    WebElement productElement = productsList.get(i);
 			clickButtonWebElement(drvier,productElement );
-			waitUntilvisibilityOf(drvier, brand);	
-		
+			waitUntilvisibilityOf(drvier, brand);
+			//drvier.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
    		 
    		if(drvier.findElements(addToCartBtn).size() == 0) 
 		{
-   		 getBack(drvier);
-			
-		waitUntilvisibilityOf(drvier, results);
-			
-   				
-   		}
-		
-			
+   		 getBack(drvier);			
+		waitUntilvisibilityOf(drvier, results);	}	
 	
    		else {
    		 WebElement priceElement= drvier.findElement(price);
-   			String text = priceElement.getText();
-   			String actualText = text.replace(",", "");
-   			int priceInt = Integer.parseInt(actualText);
-   		  		
+   	  			int priceInt = Integer.parseInt(priceElement.getText().replace(",", ""));  
+   	  			System.out.println(priceInt);
    			
-   				if( priceInt < 15000) 
-   				{
-   						
-   					clickButton(drvier, addToCartBtn);   					
+   				if( priceInt < lessThanvalue) 
+   				{						
+   					clickButton(drvier, addToCartBtn);   
+   					
+   				
    					waitUntilvisibilityOf(drvier, addedToCart_ProceedToChekout);
    					if( drvier.findElements(addedToCart_SuccessMsg).size() != 0)
    					{
    						prductsCount++;
+   						
+   						
    					}
    					 
    					getBack(drvier);
@@ -138,8 +129,7 @@ public class ProductPage extends PageBase{
    					
    				}
    				else {
-   					getBack(drvier);
-   					
+   					getBack(drvier);   					
    					waitUntilvisibilityOf(drvier, results);
    		
    				}
@@ -165,25 +155,24 @@ public class ProductPage extends PageBase{
 			else return false;
 			}
 		
-		public void  goToNextPageIfCartIsSTillEmpty (Integer products )
+		public void  GoToNextPageIfCartIsSTillEmpty (Integer products ,int lessthan )
 		{
 			if(products==0)
 			{
 			  					
 					waitUntilvisibilityOf(drvier, nextPage);
 					clickButton(drvier, nextPage); 
-				    AddToCartAllProductsLessThan15K();
+				  //  AddTolessThanValue(lessthan);
 				
 			}
 			
 		
 		}
 		
+		}
 	
 	
 
 			
-		
-	}
-
+	
 

@@ -56,7 +56,7 @@ public class CheckOutAndConfirmOrderTest extends amazon.Base.TestBase{
 }
   
   @Test (priority = 2,dataProvider= "ShppItemData")
-  public void ShopItemAndCheckOut(String shopCategoty, String shopSubCategory, String sortType, String indicator) throws InterruptedException 
+  public void ShopItemAndCheckOut(String shopCategoty, String shopSubCategory, String sortType, String indicator, String lessThanValue) throws InterruptedException 
   {
 	 
 	homeObject.selectSpecificSubCategory(shopCategoty,shopSubCategory );
@@ -64,8 +64,7 @@ public class CheckOutAndConfirmOrderTest extends amazon.Base.TestBase{
 	
 	productObject.FilterForProducts(sortType);
 	assertTrue(productObject.verifySortIsSelected(sortType));
-	
-	productObject.AddToCartAllProductsLessThan15K();
+	productObject.AddToCartWhenProductsLessThan(Integer.parseInt(lessThanValue));
 	//To go to next page if the cart is empty
 	//productObject.goToNextPageIfCartIsSTillEmpty(productObject.AddToCartAllProductsLessThan15K());
 	homeObject.openCart();
