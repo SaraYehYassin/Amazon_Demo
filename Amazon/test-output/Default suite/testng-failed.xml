@@ -5,8 +5,9 @@
     <classes>
       <class name="test.Cases.CheckOutAndConfirmOrderTest">
         <methods>
+          <include name="LoginIn"/>
           <include name="OpenURL"/>
-          <include name="ShopItemAndCheckOut" invocation-numbers="0"/>
+          <include name="ShopItemAndCheckOut"/>
           <include name="stopDriver"/>
         </methods>
       </class> <!-- test.Cases.CheckOutAndConfirmOrderTest -->
